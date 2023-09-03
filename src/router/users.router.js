@@ -16,9 +16,7 @@ userRouter.post('/', async (req, res) => {
     try {
         let { name, email, userId } = req.body
 
-        // let test = await userModel.create({ name, email, userId })
-        // let result = await userModel.save({ name, email, userId })
-        let result = await 
+        let result = await userModel.create({ name: name, email: email, userId:userId })
 
         res.send({ result: "success", payload: result })
     } catch (error) {
