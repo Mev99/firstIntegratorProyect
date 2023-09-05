@@ -21,24 +21,3 @@ mongoose.connect("mongodb+srv://Mev:1972@cluster0.kxayelo.mongodb.net/ecommerce?
 
 app.use('/user', userRouter)
 app.use('/product', productRouter)
-
-
-// *separar las rutas en una carpeta router.
-
-// GET - POST - PUT - DELETE
-
-// *Conexion a DB con MongoDB Atlas
-
-// *Utilizacion de Mongoose para el modelado de los datos.
-
-// *Db -> e-commerce.
-
-// 2 Colecciones: Users - Products (cada uno con su schema).
-
-// *REPOSITORIO con Readme con capturas de Postman o
-
-// *Capturas de Postman en el campo de la entrega.
-
-// *USERS: Nombre - Email - Id(no repetible)
-
-// PRODUCTS: Nombre - Categoria - Precio(N°) - Stock(N°) - Imagen
