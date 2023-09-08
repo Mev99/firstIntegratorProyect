@@ -2,6 +2,7 @@ import Express from "express";
 import mongoose from "mongoose";
 import userRouter from "./router/users.router.js"
 import productRouter from "./router/product.router.js";
+import cartRouter from "./router/cart.router.js";
 
 const app = Express()
 app.use(Express.json())
@@ -21,3 +22,4 @@ mongoose.connect("mongodb+srv://Mev:1972@cluster0.kxayelo.mongodb.net/ecommerce?
 
 app.use('/user', userRouter)
 app.use('/product', productRouter)
+app.use('/cart', cartRouter)
