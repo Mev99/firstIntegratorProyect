@@ -21,5 +21,5 @@ mongoose.connect("mongodb+srv://Mev:1972@cluster0.kxayelo.mongodb.net/ecommerce?
 
 
 app.use('/user', userRouter)
-app.use('/product', productRouter)
+app.use('/products', productRouter)
 app.use('/cart', cartRouter)
