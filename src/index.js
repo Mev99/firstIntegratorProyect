@@ -3,10 +3,13 @@ import mongoose from "mongoose";
 import userRouter from "./router/users.router.js"
 import productRouter from "./router/product.router.js";
 import cartRouter from "./router/cart.router.js";
+import __dirname from "./utils.js";
 
 const app = Express()
 app.use(Express.json())
-
+app.use(Express.urlencoded({ extended: true }))
+app.use("/public", Express.static('./public'))
+app.set('views', __dirname + '/views')
 app.listen(8080, () => {
     console.log(`listening on what ever port you choose homie`)
 })
