@@ -1,6 +1,50 @@
 import { Router } from "express";
+import passport from "passport";
+
 import userModel from "../models/user.model.js";
+import initializePassport from "../config/passport.config.js";
+
 const userRouter = Router()
+
+userRouter.get('/register', async (req, res) => {
+    res.render('register')
+})
+
+userRouter.post("/register", passport.authenticate("register", { failureRedirect: "/user/register" }), async (req, res) => {
+
+    const { first_name, last_name, email, age, password } = req.body
+    console.log(req.body)
+
+    if (!first_name || !last_name || !email || !age || !password) {
+        return res.status(400).send('missing information');
+    }
+
+
+    // res.write({payload: createUser})
+    res.redirect("http://localhost:8080/user/login")
+    // res.send({ status: "success", payload: createUser });
+})
+
+
+
+
+userRouter.get('/login', async (req, res) => {
+    res.render('login')
+})
+
+userRouter.post("/login", passport.authenticate("login", { failureRedirect: "/faillogin" }), async (req, res) => {
+    if (!req.session.user) {
+        return res.status(400).send("Usuario no encontrado")
+    }
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
+        age: req.user.age
+    }
+    res.send({ status: "success", payload: req.user })
+}
+)
 
 userRouter.get('/', async (req, res) => {
     try {
@@ -23,37 +67,6 @@ userRouter.get('/:uid', async (req, res) => {
     }
 })
 
-userRouter.post('/', async (req, res) => {
-    try {
-        let { name, email, userId } = req.body
-
-        let information = [{ name, email, userId }]
-
-        let result = await userModel.create(information)
-
-        res.send({ result: "success", payload: result })
-    } catch (error) {
-        console.error('error on user post', error)
-    }
-})
-
-userRouter.put("/:uid", async (req, res) => {
-    try {
-        let paramId = req.params
-        const findDocument = await userModel.findOne({ userId: paramId.uid })
-
-        if (findDocument === null) {
-            return res.send("user's ID not found")
-        }
-
-        let newUserInfo = req.body
-        let update = await findDocument.updateOne(newUserInfo)
-
-        res.send({ result: "success on updating", payload: update })
-    } catch (error) {
-        console.error("error on the user put", error)
-    }
-})
 
 userRouter.delete("/:uid", async (req, res) => {
     try {
@@ -70,52 +83,36 @@ export default userRouter
 
 
 
-//PRODUCT LOGIC OLD ONE
 
-// productRouter.get('/', async (req, res) => {
-//     try {
-//         const product = await productModel.find()
-
-//         res.send({ payload: product })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
-
-// productRouter.post('/', async (req, res) => {
-//     try {
-//         const { product, category, price, stock, image } = req.body
-
-//         const information = { product, category, price, stock, image }
-//         let result = await productModel.create(information)
-
-//         res.send({ payload: result })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
-
-// productRouter.put('/:uid', async (req, res) => {
-//     try {
-//         const paramId = req.params
-//         const findProduct = await productModel.findOne({ _id: paramId.uid })
-
-//         const newProductinfo = req.body
-//         const update = await findProduct.updateOne(newProductinfo)
-
-//         res.send({ payload: update })
-//     } catch (error) {
-//         console.error(error)
-//     }
-// })
-
-// productRouter.delete('/:uid', async (req, res) => {
-//     try {
-//         const paramId = req.params
-//         const deleteProduct = await productModel.deleteOne({ _id: paramId.uid })
-
-//         res.send({ payload: deleteProduct })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
+// OLD USER ROUTER LOGIC
+        // userRouter.post('/', async (req, res) => {
+        //     try {
+        //         let { name, email, userId } = req.body
+        
+        //         let information = [{ name, email, userId }]
+        
+        //         let result = await userModel.create(information)
+        
+        //         res.send({ result: "success", payload: result })
+        //     } catch (error) {
+        //         console.error('error on user post', error)
+        //     }
+        // })
+        
+        // userRouter.put("/:uid", async (req, res) => {
+        //     try {
+        //         let paramId = req.params
+        //         const findDocument = await userModel.findOne({ userId: paramId.uid })
+        
+        //         if (findDocument === null) {
+        //             return res.send("user's ID not found")
+        //         }
+        
+        //         let newUserInfo = req.body
+        //         let update = await findDocument.updateOne(newUserInfo)
+        
+        //         res.send({ result: "success on updating", payload: update })
+        //     } catch (error) {
+        //         console.error("error on the user put", error)
+        //     }
+        // })
