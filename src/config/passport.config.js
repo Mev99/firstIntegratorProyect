@@ -5,16 +5,7 @@ import CartModel from "../models/cart.model.js";
 import { createHash, isValidatePassword } from "../utils.js"
 
 const localStrategy = local.Strategy
-// first_name: String,
-// last_name: String,
-// email: String,
-// age: Number,
-// password: String,
-// cart: {
-//     type: Schema.Types.ObjectId,
-//     ref: 'Carts'
-// },
-// role: String
+
 const initializePassport = () => {
     passport.use(
         "register",
@@ -24,8 +15,8 @@ const initializePassport = () => {
                 const { first_name, last_name, email, age } = req.body;
                 try {
                     let user = await UserModel.findOne({ email: username });
-                    let cartTest = await CartModel.create({ })
-                console.log(cartTest)
+                    let cartTest = await CartModel.create({})
+                    console.log(cartTest)
                     if (user) {
                         console.log("El usuario ya existe");
                         return done(null, false);
@@ -71,7 +62,7 @@ passport.use('login', new localStrategy({ usernameField: "email" }, async (usern
             return done(null, false);
         }
 
-        if (!isValidatePassword(password, user.password)) {
+        if (!isValidatePassword(user.password, password)) {
             return done(null, false);
         }
 

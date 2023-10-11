@@ -6,6 +6,11 @@ import initializePassport from "../config/passport.config.js";
 
 const userRouter = Router()
 
+userRouter.get("/current", async (req, res) => {
+    const {first_name, last_name, email, age} = req.session.user
+    res.render('current', {first_name, last_name, email, age})
+})
+
 userRouter.get('/register', async (req, res) => {
     res.render('register')
 })
@@ -32,7 +37,7 @@ userRouter.get('/login', async (req, res) => {
     res.render('login')
 })
 
-userRouter.post("/login", passport.authenticate("login", { failureRedirect: "/faillogin" }), async (req, res) => {
+userRouter.post("/login", passport.authenticate("login", { failureRedirect: "/user/login" }), async (req, res) => {
     if (!req.session.user) {
         return res.status(400).send("Usuario no encontrado")
     }
