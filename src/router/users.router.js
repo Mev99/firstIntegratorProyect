@@ -18,7 +18,6 @@ userRouter.get('/register', async (req, res) => {
 userRouter.post("/register", passport.authenticate("register", { failureRedirect: "/user/register" }), async (req, res) => {
 
     const { first_name, last_name, email, age, password } = req.body
-    console.log(req.body)
 
     if (!first_name || !last_name || !email || !age || !password) {
         return res.status(400).send('missing information');
@@ -38,7 +37,7 @@ userRouter.get('/login', async (req, res) => {
 })
 
 userRouter.post("/login", passport.authenticate("login", { failureRedirect: "/user/login" }), async (req, res) => {
-    if (!req.session.user) {
+    if (!req.session.passport.user) {
         return res.status(400).send("Usuario no encontrado")
     }
     req.session.user = {
@@ -47,7 +46,8 @@ userRouter.post("/login", passport.authenticate("login", { failureRedirect: "/us
         email: req.user.email,
         age: req.user.age
     }
-    res.send({ status: "success", payload: req.user })
+    console.log(req.session.user.first_name)
+    res.redirect('http://localhost:8080/user/current')
 }
 )
 
